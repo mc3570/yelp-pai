@@ -4,7 +4,6 @@ var yelpHelper = require('./utils/yelpHelper');
 var merge = require('merge');
 var url = require('url');
 var path = require('path');
-const pug = require('pug');
 var app = express();
 app.set('view engine', 'pug');
 app.locals.pretty = true
@@ -21,44 +20,14 @@ app.get('/', function(req, res){
 });
 
 app.get('/search', function(req, res){
-	var url_parts = url.parse(req.url, true);
-	var query = url_parts.query;
+	var query = url.parse(req.url, true).query;
 	if(query.term && query.location){
 		var parameters = yelpHelper.param(query);
-		var popular_Filter = query.popularity_filter ? query.popularity_filter : 0;
 		Yelp.search(merge(options, parameters), (err, response, body) => {
 			if(err){
 				res.send("Could not find search results with term:" + query.term + " and " + query.location);
 			} else {
-				var result = JSON.parse(body);
-				console.log(parameters.offset);
-				if(result && result.total > 0){
-					if(parameters.offset && parameters.offset > result.total){
-						//Not enought result offset has passed the result total.
-						res.send("No more results");
-					}
-					// Compile the source code
-					const mainCompile = pug.compileFile(path.join(__dirname + '/public/result_template.pug'));
-					var _obj = {popularity_filter: popular_Filter};
-					var _vars = [];
-					result.businesses.forEach(function(arrayItem){
-						_vars.push({
-							rating: arrayItem.rating,
-							ratingImageUrl: arrayItem.rating_img_url,
-							categories: arrayItem.categories,
-							phone: arrayItem.phone,
-							snippetImage: arrayItem.snippet_image_url,
-							snippetText: arrayItem.snippet_text,
-							name: arrayItem.name,
-							id: arrayItem.id,
-							url: arrayItem.url,
-							reviewCount: arrayItem.review_count,
-							});
-					});
-					_obj.vars = _vars;
-					res.send(mainCompile({obj: _obj}));
-				} else 
-					res.send("No more results.");
+				yelpHelper.viewCompile(query, parameters, res, body);
 			}
 		});
 	} else {
