@@ -11,7 +11,7 @@ module.exports= {param: function(query){
 		if(query.limit) 
 			parameters.limit = query.limit;
 		if(query.offset) 
-			parameters.offset = query.offset;
+			parameters[offset] = query.offset;
 		if(query.radius_filter) 
 			parameters.radius_filter = query.radius_filter;
 		return parameters;

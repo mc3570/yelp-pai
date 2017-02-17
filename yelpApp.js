@@ -1,6 +1,6 @@
 var express = require('express');
 var Yelp = require('node-yelp-api');
-var yelpHelper = require('./yelpHelper');
+var yelpHelper = require('./utils/yelpHelper');
 var merge = require('merge');
 var url = require('url');
 var path = require('path');
@@ -19,6 +19,7 @@ var options = {
 app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname + '/public/index.html'));
 });
+
 app.get('/search', function(req, res){
 	var url_parts = url.parse(req.url, true);
 	var query = url_parts.query;
@@ -30,7 +31,12 @@ app.get('/search', function(req, res){
 				res.send("Could not find search results with term:" + query.term + " and " + query.location);
 			} else {
 				var result = JSON.parse(body);
-				if(result && result.total > parameters.offset){
+				console.log(parameters.offset);
+				if(result && result.total > 0){
+					if(parameters.offset && parameters.offset > result.total){
+						//Not enought result offset has passed the result total.
+						res.send("No more results");
+					}
 					// Compile the source code
 					const mainCompile = pug.compileFile(path.join(__dirname + '/public/result_template.pug'));
 					var _obj = {popularity_filter: popular_Filter};

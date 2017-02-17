@@ -4,12 +4,16 @@
   "description": "yelp api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Mengchen Zhang",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.1",
     "latest-version": "^3.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
