@@ -1,0 +1,16 @@
+doctype html
+html
+	head
+	body
+		ul
+			each val in vars
+				li
+					div
+						a(href=val.url) #{val.name}
+					div
+						img(src=val.snippetImage)
+					div
+						img(src=val.ratingImageUrl)
+						span #{val.reviewCount} reviews
+					p Phone: #{val.phone}
+					p Reviews: #{val.snippetText}
