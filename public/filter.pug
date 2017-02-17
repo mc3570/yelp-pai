@@ -1,0 +1,11 @@
+options.filters = {
+	'popularity-filter': function(vars, criteria){
+		var results = [];
+		for(val in vars){
+			if(val.reviewCount >= criteria){}
+				results.push(val);
+			}
+		}
+		return results;
+	}
+};

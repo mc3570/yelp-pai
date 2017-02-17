@@ -1,16 +1,39 @@
 doctype html
 html
 	head
+		script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+		script(type="text/javascript").
+			function updatePopularityFilter(val) {
+				var url = window.location.href;
+
+				var vars = url.split('?')[1].split('&');
+				var params = {}
+				var found = false;
+				for (var i=0; i < vars.length; i++) {
+					var pair = vars[i].split('=');
+					params[pair[0]] = pair[1];
+				}
+				params["popularity_filter"] = val;
+				return url.split('?')[0] + "?" + jQuery.param(params);
+			}
+			function filterFunction(){
+				var val = document.getElementById("popularity_filter").value;
+				window.location = updatePopularityFilter(val); 
+			}
 	body
+		label
+			h4 Popularity Filter
+			input(type='number' id='popularity_filter' name='popularity_filter' onchange='filterFunction()' value=obj.popularity_filter)
 		ul
-			each val in vars
-				li
-					div
-						a(href=val.url) #{val.name}
-					div
-						img(src=val.snippetImage)
-					div
-						img(src=val.ratingImageUrl)
-						span #{val.reviewCount} reviews
-					p Phone: #{val.phone}
-					p Reviews: #{val.snippetText}
+			each val in obj.vars
+				if val.reviewCount > obj.popularity_filter
+					li
+						div
+							a(href=val.url) #{val.name}
+						div
+							img(src=val.snippetImage)
+						div
+							img(src=val.ratingImageUrl)
+							span #{val.reviewCount} reviews
+						p Phone: #{val.phone}
+						p Reviews: #{val.snippetText}
