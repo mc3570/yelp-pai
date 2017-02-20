@@ -11,6 +11,7 @@ The front end UI is rendered usnig PUG files.
 Tests are build and tested by Chai and Mocha.
 
 Usage
+
 To start the server, in the main folder, type in command: node yelpApp.js
 
 In the browser, type in http://localhost:3000 to connct to the server.
