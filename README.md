@@ -17,3 +17,7 @@ To start the server, in the main folder, type in command: node yelpApp.js
 In the browser, type in http://localhost:3000 to connct to the server.
 
 To confirm the tests, in the main foler, type in command: npm test
+
+
+Special thanks to some third party yelp apis：
+https://www.npmjs.com/package/node-yelp-api
